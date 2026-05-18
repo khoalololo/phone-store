@@ -37,25 +37,44 @@ public class UserRepository {
 
     public void login(String identifier, String password, AuthCallback callback) {
         new Thread(() -> {
-            User user = dao.findByUsername(identifier);
-            if (user == null) user = dao.findByEmail(identifier);
+            // 1. Try local Room
+            User localUser = dao.findByUsername(identifier);
+            if (localUser == null) localUser = dao.findByEmail(identifier);
 
-            if (user == null) {
-                callback.onFailure("User not found locally. Please register first.");
-                return;
+            if (localUser != null) {
+                performFirebaseAuth(localUser, password, callback);
+            } else {
+                // 2. Try Firestore (User might be on a new device)
+                FirestoreManager.downloadUserByUsername(identifier, cloudUser -> {
+                    if (cloudUser != null) {
+                        performFirebaseAuth(cloudUser, password, callback);
+                    } else {
+                        FirestoreManager.downloadUserByEmail(identifier, cloudUserByEmail -> {
+                            if (cloudUserByEmail != null) {
+                                performFirebaseAuth(cloudUserByEmail, password, callback);
+                            } else {
+                                callback.onFailure("User not found. Please register.");
+                            }
+                        });
+                    }
+                });
             }
-
-            String email = user.getEmail();
-            User finalUser = user;
-            auth.signInWithEmailAndPassword(email, password)
-                    .addOnSuccessListener(result -> {
-                        new Thread(() -> {
-                            session.saveSession(finalUser.getUsername(), finalUser.getEmail());
-                            callback.onSuccess();
-                        }).start();
-                    })
-                    .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
         }).start();
+    }
+
+    private void performFirebaseAuth(User user, String password, AuthCallback callback) {
+        auth.signInWithEmailAndPassword(user.getEmail(), password)
+                .addOnSuccessListener(result -> {
+                    new Thread(() -> {
+                        // Ensure user is in local DB for next time
+                        if (dao.findByEmail(user.getEmail()) == null) {
+                            dao.insert(user);
+                        }
+                        session.saveSession(user.getUsername(), user.getEmail());
+                        callback.onSuccess();
+                    }).start();
+                })
+                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
     public interface AuthCallback {

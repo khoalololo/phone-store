@@ -39,6 +39,38 @@ public class FirestoreManager {
                 .addOnFailureListener(e -> Log.e(TAG, "User sync failed", e));
     }
 
+    public static void downloadUserByUsername(String username, UserCallback callback) {
+        db.collection("users")
+                .whereEqualTo("username", username)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    if (!snapshot.isEmpty()) {
+                        User user = snapshot.getDocuments().get(0).toObject(User.class);
+                        callback.onUserLoaded(user);
+                    } else {
+                        callback.onUserLoaded(null);
+                    }
+                })
+                .addOnFailureListener(e -> callback.onUserLoaded(null));
+    }
+
+    public static void downloadUserByEmail(String email, UserCallback callback) {
+        db.collection("users")
+                .whereEqualTo("email", email)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    if (!snapshot.isEmpty()) {
+                        User user = snapshot.getDocuments().get(0).toObject(User.class);
+                        callback.onUserLoaded(user);
+                    } else {
+                        callback.onUserLoaded(null);
+                    }
+                })
+                .addOnFailureListener(e -> callback.onUserLoaded(null));
+    }
+
     // --- FAVORITES ---
 
     public static void syncFavorite(FavoritePhone phone) {
@@ -142,6 +174,10 @@ public class FirestoreManager {
 
     public interface FavoritesCallback {
         void onFavoritesLoaded(List<FavoritePhone> favorites);
+    }
+
+    public interface UserCallback {
+        void onUserLoaded(User user);
     }
 
     public interface OrdersCallback {
