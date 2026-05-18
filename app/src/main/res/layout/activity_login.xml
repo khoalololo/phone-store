@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- ═══════════════════════════════════
+             TOP HALF — hero with icon
+        ════════════════════════════════════ -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:background="@drawable/phone">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/circle_white_bg"
+                android:src="@android:drawable/ic_menu_revert"
+                android:scaleType="centerInside"
+                android:padding="6dp" />
+        </FrameLayout>
+
+        <!-- ═══════════════════════════════════
+             BOTTOM CARD — overlaps hero by 32dp
+        ════════════════════════════════════ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="-32dp"
+            android:background="@drawable/card_top_rounded"
+            android:paddingHorizontal="28dp"
+            android:paddingTop="36dp"
+            android:paddingBottom="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome back"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:letterSpacing="0.01" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login to your account"
+                android:textSize="14sp"
+                android:textColor="#888888"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="28dp" />
+
+            <!-- Username -->
+            <EditText
+                android:id="@+id/username_input"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="Username"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <!-- Password -->
+            <EditText
+                android:id="@+id/password_input"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:hint="Password"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="textPassword" />
+
+            <!-- Remember me + Forgot password -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp">
+
+                <CheckBox
+                    android:id="@+id/rememberMe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Remember me"
+                    android:textSize="13sp"
+                    android:textColor="#555555"
+                    android:buttonTint="@color/pink_primary" />
+
+                <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/forgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Forgot password?"
+                    android:textSize="13sp"
+                    android:textColor="@color/pink_primary" />
+
+            </LinearLayout>
+
+            <!-- Login button — strong CTA -->
+            <Button
+                android:id="@+id/loginBtn"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="28dp"
+                android:text="Login"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/pink_primary" />
+
+            <!-- Sign up text link -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Don't have an account? "
+                    android:textSize="13sp"
+                    android:textColor="#888888" />
+
+                <TextView
+                    android:id="@+id/signupBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign Up"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/pink_primary" />
+
+            </LinearLayout>
+
+            <!-- Browse as guest — text link -->
+            <TextView
+                android:id="@+id/browseBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="Browse without an account →"
+                android:textSize="13sp"
+                android:textColor="@color/pink_primary" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

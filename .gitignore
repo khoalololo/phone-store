@@ -1,0 +1,36 @@
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Gradle
+.gradle/
+build/
+*/build/
+
+# Local configuration
+local.properties
+
+# Log files
+*.log
+
+# Android Studio / IntelliJ
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.ap_
+*.dex
+*.class
+
+# Crashlytics / Firebase
+google-services.json
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Misc
+.navigation/
+.gradle

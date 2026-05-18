@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.App_week_2" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/pink_primary</item>
+        <item name="colorPrimaryVariant">@color/pink_dark</item>
+        <item name="colorSecondary">@color/pink_accent</item>
+    </style>
+
+    <style name="Theme.App_week_2" parent="Base.Theme.App_week_2" />
+</resources>

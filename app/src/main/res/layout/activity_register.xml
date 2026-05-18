@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- ═══════════════════════════════════
+             TOP HALF — hero with title overlay
+        ════════════════════════════════════ -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@drawable/phone">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/circle_white_bg"
+                android:src="@android:drawable/ic_menu_revert"
+                android:scaleType="centerInside"
+                android:padding="6dp" />
+
+            <!-- Title sits in the hero like the reference -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.02"
+                    android:text="Register"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Create your new account"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- ═══════════════════════════════════
+             BOTTOM CARD
+        ════════════════════════════════════ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="-32dp"
+            android:background="@drawable/card_top_rounded"
+            android:paddingHorizontal="28dp"
+            android:paddingTop="36dp"
+            android:paddingBottom="40dp">
+
+            <!-- Email -->
+            <EditText
+                android:id="@+id/register_email"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="Email"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="textEmailAddress" />
+
+            <!-- Username -->
+            <EditText
+                android:id="@+id/register_username"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:hint="Username"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <!-- Password -->
+            <EditText
+                android:id="@+id/register_password"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:hint="Password"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="textPassword" />
+
+            <!-- Terms text -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="By signing up you agree to our Terms of use and privacy policy."
+                android:textSize="12sp"
+                android:textColor="#AAAAAA"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.4" />
+
+            <!-- Sign Up button — strong CTA -->
+            <Button
+                android:id="@+id/registerBtn"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
+                android:text="Sign Up"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/pink_primary" />
+
+            <!-- Back to login link -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an account? "
+                    android:textSize="13sp"
+                    android:textColor="#888888" />
+
+                <TextView
+                    android:id="@+id/backToLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/pink_primary" />
+
+            </LinearLayout>
+
+            <!-- Browse as guest — text link -->
+            <TextView
+                android:id="@+id/browseBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="Browse without an account →"
+                android:textSize="13sp"
+                android:textColor="@color/pink_primary" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F6F8">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/gradient_bg"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="36dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="-6dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_revert"
+                android:contentDescription="Back"
+                android:padding="6dp"
+                app:tint="@color/white" />
+
+            <!-- SEARCHBAR -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/search_bar_bg"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/searchInput"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:hint="Search phones..."
+                    android:textColorHint="#AAAAAA"
+                    android:textColor="#1A1A1A"
+                    android:textSize="13sp"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:singleLine="true" />
+
+            </LinearLayout>
+
+            <!--
+                ★ NEW: Profile avatar button.
+                Sits right of the search bar.
+                visibility="gone" by default — HomeActivity reveals it
+                only when session.isLoggedIn() is true.
+            -->
+            <ImageView
+                android:id="@+id/profileAvatar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/icon_account_circle"
+                android:background="@drawable/circle_white_bg"
+                android:padding="4dp"
+                android:scaleType="centerInside"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Elevate your digital life"
+            android:textSize="14sp"
+            android:textColor="#CCFFFFFF" />
+
+        <TextView
+            android:id="@+id/greetingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:letterSpacing="0.01"
+            android:text="Tech Pulse Hub"
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <!-- Content Card -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginTop="-20dp"
+        android:background="@drawable/card_top_rounded">
+
+        <!-- Category tabs — same pattern as before -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="12dp">
+
+            <LinearLayout
+                android:id="@+id/tagContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tagAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="All"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/tag_active_bg"
+                    android:paddingHorizontal="20dp"
+                    android:gravity="center"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tagApple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Apple"
+                    android:textSize="13sp"
+                    android:textColor="@color/pink_primary"
+                    android:background="@drawable/tag_inactive_bg"
+                    android:paddingHorizontal="20dp"
+                    android:gravity="center"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tagSamsung"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Samsung"
+                    android:textSize="13sp"
+                    android:textColor="@color/pink_primary"
+                    android:background="@drawable/tag_inactive_bg"
+                    android:paddingHorizontal="20dp"
+                    android:gravity="center"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tagGoogle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Google"
+                    android:textSize="13sp"
+                    android:textColor="@color/pink_primary"
+                    android:background="@drawable/tag_inactive_bg"
+                    android:paddingHorizontal="20dp"
+                    android:gravity="center"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tagOnePlus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="OnePlus"
+                    android:textSize="13sp"
+                    android:textColor="@color/pink_primary"
+                    android:background="@drawable/tag_inactive_bg"
+                    android:paddingHorizontal="20dp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!--
+            GridView — same as ListView but numColumns="2"
+            stretchMode="columnWidth" makes both columns equal width
+        -->
+        <GridView
+            android:id="@+id/phoneGridView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:numColumns="2"
+            android:horizontalSpacing="0dp"
+            android:verticalSpacing="0dp"
+            android:stretchMode="columnWidth"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false" />
+
+    </LinearLayout>
+    <include layout="@layout/bottom_nav" />
+</LinearLayout>
