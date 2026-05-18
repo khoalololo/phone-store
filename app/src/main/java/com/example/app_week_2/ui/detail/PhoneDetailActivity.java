@@ -6,11 +6,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.app_week_2.R;
+import com.example.app_week_2.data.repository.CartRepository;
+import com.example.app_week_2.data.repository.FavoriteRepository;
 import com.example.app_week_2.models.Phone;
 import java.util.Locale;
-import com.example.app_week_2.data.AppDatabase;
-import com.example.app_week_2.data.CartDao;
-import com.example.app_week_2.data.FavoriteDao;
 import com.example.app_week_2.models.CartItem;
 import com.example.app_week_2.models.FavoritePhone;
 import android.content.Intent;
@@ -28,10 +27,16 @@ import com.example.app_week_2.ui.auth.ProfileActivity;
 
 public class PhoneDetailActivity extends AppCompatActivity {
 
+    private FavoriteRepository favoriteRepository;
+    private CartRepository cartRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_detail);
+
+        favoriteRepository = new FavoriteRepository(this);
+        cartRepository = new CartRepository(this);
 
         Phone phone = (Phone) getIntent().getSerializableExtra("phone");
 
@@ -43,31 +48,30 @@ public class PhoneDetailActivity extends AppCompatActivity {
 
         populateUI(phone);
 
-        FavoriteDao favoriteDao = AppDatabase.getInstance(this).favoriteDao();
-        CartDao cartDao         = AppDatabase.getInstance(this).cartDao();
-
         Button favoriteBtn  = findViewById(R.id.favoriteBtn);
         Button addToCartBtn = findViewById(R.id.addToCartBtn);
 
-// Check if already favorited and update button label
+        // Check if already favorited
         new Thread(() -> {
-            FavoritePhone existing = favoriteDao.findByName(phone.getName());
+            boolean isFav = favoriteRepository.getAllLocal().stream()
+                    .anyMatch(p -> p.getName().equals(phone.getName()));
             runOnUiThread(() -> {
-                if (existing != null) favoriteBtn.setText("❤️  Saved");
+                if (isFav) favoriteBtn.setText("❤️  Saved");
             });
         }).start();
 
         favoriteBtn.setOnClickListener(v -> {
             new Thread(() -> {
-                FavoritePhone existing = favoriteDao.findByName(phone.getName());
-                if (existing != null) {
-                    favoriteDao.deleteByName(phone.getName());
+                boolean isFav = favoriteRepository.getAllLocal().stream()
+                        .anyMatch(p -> p.getName().equals(phone.getName()));
+                if (isFav) {
+                    favoriteRepository.removeFavorite(phone.getName());
                     runOnUiThread(() -> {
                         favoriteBtn.setText("❤️  Add to Favorites");
                         Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show();
                     });
                 } else {
-                    favoriteDao.insert(FavoritePhone.fromPhone(phone));
+                    favoriteRepository.addFavorite(FavoritePhone.fromPhone(phone));
                     runOnUiThread(() -> {
                         favoriteBtn.setText("❤️  Saved");
                         Toast.makeText(this, "Added to favorites!", Toast.LENGTH_SHORT).show();
@@ -77,24 +81,14 @@ public class PhoneDetailActivity extends AppCompatActivity {
         });
 
         addToCartBtn.setOnClickListener(v -> {
-            new Thread(() -> {
-                CartItem existing = cartDao.findByName(phone.getName());
-                if (existing != null) {
-                    existing.quantity++;
-                    cartDao.update(existing);
-                } else {
-                    cartDao.insert(CartItem.fromPhone(phone));
-                }
-                runOnUiThread(() -> {
-                    showNotification(phone.getName());
-                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                            "Added to cart!", Snackbar.LENGTH_LONG);
-                    snackbar.setAction("VIEW CART", v2 -> {
-                        startActivity(new Intent(this, CartActivity.class));
-                    });
-                    snackbar.show();
-                });
-            }).start();
+            cartRepository.addToCart(CartItem.fromPhone(phone));
+            showNotification(phone.getName());
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                    "Added to cart!", Snackbar.LENGTH_LONG);
+            snackbar.setAction("VIEW CART", v2 -> {
+                startActivity(new Intent(this, CartActivity.class));
+            });
+            snackbar.show();
         });
 
 

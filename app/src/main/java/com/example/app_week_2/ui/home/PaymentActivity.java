@@ -19,19 +19,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.example.app_week_2.data.repository.OrderRepository;
+
 public class PaymentActivity extends AppCompatActivity {
 
     private CartDao cartDao;
-    private OrderDao orderDao;
     private List<CartItem> cartItems;
+    private OrderRepository orderRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
+        orderRepository = new OrderRepository(this);
         cartDao  = AppDatabase.getInstance(this).cartDao();
-        orderDao = AppDatabase.getInstance(this).orderDao();
 
         TextView summaryText  = findViewById(R.id.orderSummaryText);
         TextView totalText    = findViewById(R.id.paymentTotal);
@@ -47,7 +49,7 @@ public class PaymentActivity extends AppCompatActivity {
         new Thread(() -> {
             cartItems = cartDao.getAll();
             runOnUiThread(() -> {
-                if (cartItems.isEmpty()) { finish(); return; }
+                if (cartItems == null || cartItems.isEmpty()) { finish(); return; }
 
                 StringBuilder summary = new StringBuilder();
                 double total = 0;
@@ -81,32 +83,30 @@ public class PaymentActivity extends AppCompatActivity {
                 return;
             }
 
-            // Save order + clear cart
-            new Thread(() -> {
-                // Build order summary string
-                StringBuilder summary = new StringBuilder();
-                double total = 0;
-                int count = 0;
-                for (CartItem item : cartItems) {
-                    summary.append(item.name).append(" x").append(item.quantity).append(", ");
-                    total += item.getSubtotal();
-                    count += item.quantity;
-                }
+            // Build order summary string
+            StringBuilder summary = new StringBuilder();
+            double total = 0;
+            int count = 0;
+            for (CartItem item : cartItems) {
+                summary.append(item.name).append(" x").append(item.quantity).append(", ");
+                total += item.getSubtotal();
+                count += item.quantity;
+            }
 
-                String date = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
-                Order order = new Order(date, total, summary.toString().replaceAll(", $", ""), count);
+            String date = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
+            Order order = new Order(date, total, summary.toString().replaceAll(", $", ""), count);
 
-                orderDao.insert(order);
-                cartDao.clearAll();  // empty the cart
-
-                runOnUiThread(() -> {
-                    Toast.makeText(this, "✅ Order placed! Thank you.", Toast.LENGTH_LONG).show();
-                    // Go back to home and clear back stack
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                });
-            }).start();
+            orderRepository.placeOrder(order, () -> {
+                new Thread(() -> {
+                    cartDao.clearAll();
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, "Order placed! Thank you.", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(this, HomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    });
+                }).start();
+            });
         });
     }
 }

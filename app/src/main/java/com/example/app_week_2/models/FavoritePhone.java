@@ -18,6 +18,8 @@ public class FavoritePhone {
     public String display;
     public String os;
 
+    public FavoritePhone() {}
+
     public FavoritePhone(String brand, String name, int imageResource, double price,
                          String storage, String battery, String display, String os) {
         this.brand = brand;
@@ -38,4 +40,7 @@ public class FavoritePhone {
         );
     }
 
+    public String getName() {
+        return name;
+    }
 }

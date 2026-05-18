@@ -18,25 +18,30 @@ import com.example.app_week_2.ui.detail.PhoneDetailActivity;
 
 import java.util.List;
 
+import com.example.app_week_2.data.repository.FavoriteRepository;
+
 public class FavoritesActivity extends AppCompatActivity {
 
     private ListView listView;
     private LinearLayout emptyState;
-    private FavoriteDao dao;
     private List<FavoritePhone> favorites;
     private FavoriteAdapter adapter;
+    private FavoriteRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
 
-        dao       = AppDatabase.getInstance(this).favoriteDao();
+        repository = new FavoriteRepository(this);
         listView  = findViewById(R.id.favoritesList);
         emptyState = findViewById(R.id.emptyState);
 
         setupBottomNav();
         loadFavorites();
+
+        // Sync from cloud once on load
+        repository.syncFromCloud(this::loadFavorites);
     }
 
     @Override
@@ -47,7 +52,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
     private void loadFavorites() {
         new Thread(() -> {
-            favorites = dao.getAll();
+            favorites = repository.getAllLocal();
             runOnUiThread(() -> {
                 if (favorites.isEmpty()) {
                     listView.setVisibility(View.GONE);
@@ -77,12 +82,10 @@ public class FavoritesActivity extends AppCompatActivity {
 
                     // Tap ❤️ to remove
                     adapter.setOnRemoveListener(phone -> {
+                        repository.removeFavorite(phone.name);
                         new Thread(() -> {
-                            dao.deleteByName(phone.name);
-                            runOnUiThread(() -> {
-                                Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show();
-                                loadFavorites();
-                            });
+                            try { Thread.sleep(100); } catch (InterruptedException e) {}
+                            runOnUiThread(this::loadFavorites);
                         }).start();
                     });
                 }

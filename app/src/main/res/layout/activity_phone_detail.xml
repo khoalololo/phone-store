@@ -324,12 +324,14 @@
                     android:id="@+id/addToCartBtn"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:layout_marginTop="10dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:text="Add to Cart"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/pink_primary" />
+                    android:textColor="@color/pink_primary"
+                    app:strokeColor="@color/pink_primary"
+                    app:strokeWidth="2dp"
+                    app:cornerRadius="4dp" />
 
             </LinearLayout>
 

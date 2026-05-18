@@ -15,6 +15,8 @@ import com.example.app_week_2.ui.auth.ProfileActivity;
 
 import java.util.List;
 
+import com.example.app_week_2.data.repository.CartRepository;
+
 public class CartActivity extends AppCompatActivity {
 
     private ListView listView;
@@ -23,12 +25,14 @@ public class CartActivity extends AppCompatActivity {
     private CartDao dao;
     private List<CartItem> items;
     private CartAdapter adapter;
+    private CartRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        repository = new CartRepository(this);
         dao        = AppDatabase.getInstance(this).cartDao();
         listView   = findViewById(R.id.cartList);
         emptyState = findViewById(R.id.cartEmptyState);
@@ -69,21 +73,20 @@ public class CartActivity extends AppCompatActivity {
 
                     // Quantity changes
                     adapter.setOnQuantityChangedListener((item, newQty) -> {
+                        repository.updateQuantity(item, newQty);
+                        // Refresh after a slight delay or by observing
+                        // For simplicity, reload after background work
                         new Thread(() -> {
-                            if (newQty <= 0) {
-                                dao.deleteById(item.id);
-                            } else {
-                                item.quantity = newQty;
-                                dao.update(item);
-                            }
+                            try { Thread.sleep(100); } catch (InterruptedException e) {}
                             runOnUiThread(this::loadCart);
                         }).start();
                     });
 
                     // Remove
                     adapter.setOnRemoveListener(item -> {
+                        repository.removeFromCart(item);
                         new Thread(() -> {
-                            dao.deleteById(item.id);
+                            try { Thread.sleep(100); } catch (InterruptedException e) {}
                             runOnUiThread(this::loadCart);
                         }).start();
                     });

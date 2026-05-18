@@ -14,6 +14,8 @@ public class Order {
     public String itemsSummary;   // e.g. "iPhone 15 Pro x1, Galaxy S24 x2"
     public int itemCount;
 
+    public Order() {}
+
     public Order(String date, double total, String itemsSummary, int itemCount) {
         this.date = date;
         this.total = total;

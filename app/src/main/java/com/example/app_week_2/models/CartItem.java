@@ -15,6 +15,8 @@ public class CartItem {
     public double price;
     public int quantity;
 
+    public CartItem() {}
+
     public CartItem(String brand, String name, int imageResource, double price, int quantity) {
         this.brand = brand;
         this.name = name;

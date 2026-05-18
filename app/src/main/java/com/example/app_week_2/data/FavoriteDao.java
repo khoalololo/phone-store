@@ -3,6 +3,7 @@ package com.example.app_week_2.data;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import com.example.app_week_2.models.FavoritePhone;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 @Dao
 public interface FavoriteDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(FavoritePhone phone);
 
     @Delete
@@ -24,4 +25,7 @@ public interface FavoriteDao {
 
     @Query("DELETE FROM favorites WHERE name = :name")
     void deleteByName(String name);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<FavoritePhone> favorites);
 }

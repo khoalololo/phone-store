@@ -14,17 +14,21 @@ import com.example.app_week_2.data.UserDao;
 import com.example.app_week_2.models.User;
 import com.example.app_week_2.ui.home.HomeActivity;
 
+import com.example.app_week_2.data.repository.UserRepository;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText usernameInput;
     private EditText passwordInput;
     private EditText emailInput;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        userRepository = new UserRepository(this);
         usernameInput = findViewById(R.id.register_username);
         passwordInput = findViewById(R.id.register_password);
         emailInput = findViewById(R.id.register_email);
@@ -42,37 +46,21 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            new Thread(() -> {
-                UserDao dao = AppDatabase.getInstance(this).userDao();
-                
-                // Check if user already exists by email or username
-                User existingEmail = dao.findByEmail(email);
-                User existingUser  = dao.findByUsername(username);
+            userRepository.register(username, email, password, new UserRepository.AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    runOnUiThread(() -> {
+                        Toast.makeText(RegisterActivity.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                        finish();
+                    });
+                }
 
-                runOnUiThread(() -> {
-                    if (existingEmail != null) {
-                        Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show();
-                    } else if (existingUser != null) {
-                        Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // All good, perform insertion
-                        new Thread(() -> {
-                            User newUser = new User(username, email, password);
-                            dao.insert(newUser);
-
-                            runOnUiThread(() -> {
-                                // Save session for new user
-                                SessionManager session = new SessionManager(this);
-                                session.saveSession(newUser.getUsername(), newUser.getEmail());
-
-                                Toast.makeText(this, "Account created successfully! Welcome, " + username + "!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(this, HomeActivity.class));
-                                finish(); // Prevent going back to registration
-                            });
-                        }).start();
-                    }
-                });
-            }).start();
+                @Override
+                public void onFailure(String error) {
+                    runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "Error: " + error, Toast.LENGTH_LONG).show());
+                }
+            });
         });
 
         backToLogin.setOnClickListener(v -> {

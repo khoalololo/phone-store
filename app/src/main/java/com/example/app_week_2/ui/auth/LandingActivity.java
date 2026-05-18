@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.app_week_2.R;
+import com.example.app_week_2.data.remote.FirebaseAuthManager;
 import com.example.app_week_2.ui.home.HomeActivity;
 import com.example.app_week_2.data.SessionManager;
 
@@ -39,5 +40,6 @@ public class LandingActivity extends AppCompatActivity {
         browseBtn.setOnClickListener(v ->
                 startActivity(new Intent(this, HomeActivity.class))
         );
+        FirebaseAuthManager.signInAnonymously();
     }
 }

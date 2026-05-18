@@ -15,14 +15,18 @@ import com.example.app_week_2.ui.auth.ProfileActivity;
 
 import java.util.List;
 
+import com.example.app_week_2.data.repository.OrderRepository;
+
 public class OrderHistoryActivity extends AppCompatActivity {
+
+    private OrderRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
 
-        OrderDao dao        = AppDatabase.getInstance(this).orderDao();
+        repository = new OrderRepository(this);
         ListView listView   = findViewById(R.id.orderList);
         LinearLayout empty  = findViewById(R.id.orderEmptyState);
 
@@ -38,8 +42,16 @@ public class OrderHistoryActivity extends AppCompatActivity {
         findViewById(R.id.navProfile).setOnClickListener(v ->
                 startActivity(new Intent(this, ProfileActivity.class)));
 
+        loadOrders();
+        repository.syncFromCloud(this::loadOrders);
+    }
+
+    private void loadOrders() {
+        ListView listView   = findViewById(R.id.orderList);
+        LinearLayout empty  = findViewById(R.id.orderEmptyState);
+
         new Thread(() -> {
-            List<Order> orders = dao.getAll();
+            List<Order> orders = repository.getAllLocal();
             runOnUiThread(() -> {
                 if (orders.isEmpty()) {
                     listView.setVisibility(View.GONE);
@@ -48,12 +60,10 @@ public class OrderHistoryActivity extends AppCompatActivity {
                     empty.setVisibility(View.GONE);
                     listView.setVisibility(View.VISIBLE);
 
-                    // Simple string adapter — each order is one formatted string
-                    // You can build a custom adapter later following the same pattern you learned
                     String[] rows = new String[orders.size()];
                     for (int i = 0; i < orders.size(); i++) {
                         Order o = orders.get(i);
-                        rows[i] = "📦  " + o.date + "   $" + String.format("%.2f", o.total)
+                        rows[i] = o.date + "   $" + String.format("%.2f", o.total)
                                 + "\n" + o.itemsSummary;
                     }
                     listView.setAdapter(new ArrayAdapter<>(
