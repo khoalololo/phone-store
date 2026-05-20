@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.app_week_2.models.CartItem;
 import com.example.app_week_2.models.FavoritePhone;
 import com.example.app_week_2.models.Order;
+import com.example.app_week_2.models.Phone;
 import com.example.app_week_2.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -170,8 +171,37 @@ public class FirestoreManager {
                 });
     }
 
-    // --- CALLBACKS ---
+    // --- PHONES ---
 
+    public static void uploadPhone(Phone phone) {
+        db.collection("phones")
+                .document(phone.id)
+                .set(phone)
+                .addOnSuccessListener(v -> Log.d(TAG, "Phone uploaded: " + phone.getName()))
+                .addOnFailureListener(e -> Log.e(TAG, "Upload failed", e));
+    }
+
+    public static void downloadPhones(PhonesCallback callback) {
+        db.collection("phones")
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    List<Phone> phones = new ArrayList<>();
+                    for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                        Phone phone = doc.toObject(Phone.class);
+                        if (phone != null) phones.add(phone);
+                    }
+                    callback.onPhonesLoaded(phones);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Download phones failed", e);
+                    callback.onPhonesLoaded(new ArrayList<>()); // empty on failure
+                });
+    }
+
+    // --- CALLBACKS ---
+    public interface PhonesCallback {
+        void onPhonesLoaded(List<Phone> phones);
+    }
     public interface FavoritesCallback {
         void onFavoritesLoaded(List<FavoritePhone> favorites);
     }

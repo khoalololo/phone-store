@@ -11,16 +11,16 @@ public class CartItem {
 
     public String brand;
     public String name;
-    public int imageResource;
+    public String imageName; // Changed from int imageResource to String imageName
     public double price;
     public int quantity;
 
     public CartItem() {}
 
-    public CartItem(String brand, String name, int imageResource, double price, int quantity) {
+    public CartItem(String brand, String name, String imageName, double price, int quantity) {
         this.brand = brand;
         this.name = name;
-        this.imageResource = imageResource;
+        this.imageName = imageName;
         this.price = price;
         this.quantity = quantity;
     }
@@ -32,7 +32,7 @@ public class CartItem {
     public static CartItem fromPhone(Phone phone) {
         return new CartItem(
                 phone.getBrand(), phone.getName(),
-                phone.getImageResource(), phone.getPrice(), 1
+                phone.getImageName(), phone.getPrice(), 1
         );
     }
 }

@@ -57,7 +57,8 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
 
         CartItem item = getItem(position);
         if (item != null) {
-            holder.image.setImageResource(item.imageResource);
+            int resId = mContext.getResources().getIdentifier(item.imageName, "drawable", mContext.getPackageName());
+            holder.image.setImageResource(resId);
             holder.brand.setText(item.brand);
             holder.name.setText(item.name);
             holder.price.setText(String.format("$%.2f", item.getSubtotal()));

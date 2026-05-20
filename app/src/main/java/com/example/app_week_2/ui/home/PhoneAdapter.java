@@ -40,7 +40,8 @@ public class PhoneAdapter extends ArrayAdapter<Phone> {
 
         Phone phone = getItem(position);
         if (phone != null) {
-            holder.phoneImage.setImageResource(phone.getImageResource());
+            int resId = mContext.getResources().getIdentifier(phone.getImageName(), "drawable", mContext.getPackageName());
+            holder.phoneImage.setImageResource(resId);
             holder.phoneBrand.setText(phone.getBrand());
             holder.phoneName.setText(phone.getName());
             holder.phonePrice.setText(String.format("$%.2f", phone.getPrice()));

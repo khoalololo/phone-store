@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.example.app_week_2.R;
 import com.example.app_week_2.data.PhoneProvider;
 import com.example.app_week_2.data.SessionManager;
+import com.example.app_week_2.data.repository.PhoneRepository;
 import com.example.app_week_2.models.Phone;
 import com.example.app_week_2.ui.auth.ProfileActivity;
 import com.example.app_week_2.ui.detail.PhoneDetailActivity;
@@ -53,12 +54,46 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
-        // Fetch data from Repository (PhoneProvider)
-        allPhones.addAll(PhoneProvider.getPhones());
+        PhoneRepository phoneRepository = new PhoneRepository(this);
 
         GridView gridView = findViewById(R.id.phoneGridView);
         adapter = new PhoneAdapter(this, R.layout.item_phone, new ArrayList<>(allPhones));
         gridView.setAdapter(adapter);
+
+        // Load local data in background
+        new Thread(() -> {
+            List<Phone> local = phoneRepository.getAllLocal();
+            if (local.isEmpty()) {
+                // First time: Seed from PhoneProvider
+                List<Phone> seed = PhoneProvider.getPhones();
+                for (Phone p : seed) {
+                    p.id = p.getName().toLowerCase().replace(" ", "_");
+                }
+                phoneRepository.seedDatabase(seed);
+                local = seed; // Show seed data immediately
+            }
+            
+            final List<Phone> toDisplay = local;
+            runOnUiThread(() -> {
+                allPhones.clear();
+                allPhones.addAll(toDisplay);
+                adapter.clear();
+                adapter.addAll(allPhones);
+                adapter.notifyDataSetChanged();
+            });
+        }).start();
+
+        // Sync from Firestore in background, refresh when done
+        phoneRepository.syncFromCloud(() -> {
+            List<Phone> updated = phoneRepository.getAllLocal();
+            runOnUiThread(() -> {
+                allPhones.clear();
+                allPhones.addAll(updated);
+                adapter.clear();
+                adapter.addAll(allPhones);
+                adapter.notifyDataSetChanged();
+            });
+        });
 
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             Phone tapped = adapter.getItem(position);

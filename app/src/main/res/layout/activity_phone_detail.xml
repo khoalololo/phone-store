@@ -306,6 +306,77 @@
                     android:layout_marginVertical="20dp"
                     android:background="#EEEEEE" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="#EEEEEE" />
+
+                <!-- Reviews Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Reviews"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1A2E"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#F9F9FB"
+                    android:padding="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rate this phone"
+                        android:textSize="14sp"
+                        android:textColor="#555555"
+                        android:layout_marginBottom="8dp" />
+
+                    <RatingBar
+                        android:id="@+id/reviewRatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:numStars="5"
+                        android:stepSize="1.0"
+                        android:isIndicator="false"
+                        android:progressTint="#FFC107"
+                        android:layout_marginBottom="12dp" />
+
+                    <EditText
+                        android:id="@+id/reviewEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Write a review..."
+                        android:textSize="14sp"
+                        android:background="@drawable/search_bar_bg"
+                        android:padding="12dp"
+                        android:gravity="top"
+                        android:lines="3"
+                        android:layout_marginBottom="12dp" />
+
+                    <Button
+                        android:id="@+id/submitReviewBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Submit Review"
+                        android:textSize="13sp"
+                        android:backgroundTint="@color/pink_primary"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/reviewsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
                 <Button
                     android:id="@+id/favoriteBtn"
                     android:layout_width="match_parent"

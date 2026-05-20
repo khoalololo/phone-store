@@ -4,8 +4,11 @@ import android.content.Context;
 
 import com.example.app_week_2.data.AppDatabase;
 import com.example.app_week_2.data.FavoriteDao;
+import com.example.app_week_2.data.PhoneProvider;
 import com.example.app_week_2.data.remote.FirestoreManager;
 import com.example.app_week_2.models.FavoritePhone;
+import com.example.app_week_2.models.Phone;
+import android.util.Log;
 
 import java.util.List;
 
@@ -39,8 +42,25 @@ public class FavoriteRepository {
         FirestoreManager.downloadFavorites(cloudList -> {
             new Thread(() -> {
                 for (FavoritePhone p : cloudList) {
-                    if (dao.findByName(p.getName()) == null) {
-                        dao.insert(p);
+                    if (p != null && p.getName() != null) {
+                        // Data Repair: If imageName is missing, recover it from PhoneProvider
+                        if (p.imageName == null || p.imageName.isEmpty()) {
+                            for (Phone ref : PhoneProvider.getPhones()) {
+                                if (ref.getName().equalsIgnoreCase(p.getName())) {
+                                    p.imageName = ref.getImageName();
+                                    Log.d("FAV_REPO", "Repaired missing image for: " + p.getName() + " -> " + p.imageName);
+                                    break;
+                                }
+                            }
+                        }
+
+                        FavoritePhone existing = dao.findByName(p.getName());
+                        if (existing == null) {
+                            dao.insert(p);
+                        } else {
+                            p.id = existing.id;
+                            dao.insert(p);
+                        }
                     }
                 }
                 if (onComplete != null) onComplete.run();
