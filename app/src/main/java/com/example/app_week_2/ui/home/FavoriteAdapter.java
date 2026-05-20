@@ -54,7 +54,6 @@ public class FavoriteAdapter extends ArrayAdapter<FavoritePhone> {
             holder.brand.setText(phone.brand);
             holder.name.setText(phone.name);
             holder.price.setText(String.format("$%.2f", phone.price));
-            holder.removeBtn.setText("❤️");
             holder.removeBtn.setOnClickListener(v -> {
                 if (removeListener != null) removeListener.onRemove(phone);
             });
@@ -65,6 +64,7 @@ public class FavoriteAdapter extends ArrayAdapter<FavoritePhone> {
 
     static class ViewHolder {
         ImageView image;
-        TextView brand, name, price, removeBtn;
+        TextView brand, name, price;
+        View removeBtn;
     }
 }

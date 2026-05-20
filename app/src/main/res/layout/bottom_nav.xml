@@ -4,6 +4,7 @@
     Each screen highlights its own tab in Java by setting alpha.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:orientation="horizontal"
@@ -19,11 +20,12 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🏠"
-            android:textSize="20sp" />
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_nav_home"
+            android:contentDescription="Home"
+            app:tint="@color/pink_primary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,11 +46,12 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="❤️"
-            android:textSize="20sp" />
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_nav_favorites"
+            android:contentDescription="Favorites"
+            app:tint="@color/pink_primary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -69,11 +72,12 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🛒"
-            android:textSize="20sp" />
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_nav_cart"
+            android:contentDescription="Cart"
+            app:tint="@color/pink_primary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -94,11 +98,12 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="👤"
-            android:textSize="20sp" />
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_nav_profile"
+            android:contentDescription="Profile"
+            app:tint="@color/pink_primary" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -56,7 +56,7 @@ public class PhoneDetailActivity extends AppCompatActivity {
             boolean isFav = favoriteRepository.getAllLocal().stream()
                     .anyMatch(p -> p.getName().equals(phone.getName()));
             runOnUiThread(() -> {
-                if (isFav) favoriteBtn.setText("❤️  Saved");
+                if (isFav) favoriteBtn.setText("Saved");
             });
         }).start();
 
@@ -67,13 +67,13 @@ public class PhoneDetailActivity extends AppCompatActivity {
                 if (isFav) {
                     favoriteRepository.removeFavorite(phone.getName());
                     runOnUiThread(() -> {
-                        favoriteBtn.setText("❤️  Add to Favorites");
+                        favoriteBtn.setText("Add to Favorites");
                         Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show();
                     });
                 } else {
                     favoriteRepository.addFavorite(FavoritePhone.fromPhone(phone));
                     runOnUiThread(() -> {
-                        favoriteBtn.setText("❤️  Saved");
+                        favoriteBtn.setText("Saved");
                         Toast.makeText(this, "Added to favorites!", Toast.LENGTH_SHORT).show();
                     });
                 }

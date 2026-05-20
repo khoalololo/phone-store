@@ -79,6 +79,7 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
 
     static class ViewHolder {
         ImageView image;
-        TextView brand, name, price, qtyMinus, qtyValue, qtyPlus, removeBtn;
+        TextView brand, name, price, qtyMinus, qtyValue, qtyPlus;
+        View removeBtn;
     }
 }
