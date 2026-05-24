@@ -198,7 +198,6 @@ public class FirestoreManager {
                 });
     }
 
-    // --- CALLBACKS ---
     public interface PhonesCallback {
         void onPhonesLoaded(List<Phone> phones);
     }

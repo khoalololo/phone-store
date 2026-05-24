@@ -19,8 +19,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
-import com.example.app_week_2.ui.home.HomeActivity;
-import com.example.app_week_2.ui.home.FavoritesActivity;
 import com.example.app_week_2.ui.home.CartActivity;
 import com.example.app_week_2.ui.auth.ProfileActivity;
 import com.example.app_week_2.data.AppDatabase;
@@ -67,7 +65,6 @@ public class PhoneDetailActivity extends AppCompatActivity {
         Button favoriteBtn  = findViewById(R.id.favoriteBtn);
         Button addToCartBtn = findViewById(R.id.addToCartBtn);
         Button submitReviewBtn = findViewById(R.id.submitReviewBtn);
-
         // Check if already favorited
         new Thread(() -> {
             boolean isFav = favoriteRepository.getAllLocal().stream()
@@ -112,16 +109,6 @@ public class PhoneDetailActivity extends AppCompatActivity {
 
 
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
-
-        // Navigation
-        findViewById(R.id.navHome).setOnClickListener(v ->
-                startActivity(new Intent(this, HomeActivity.class)));
-        findViewById(R.id.navFavorites).setOnClickListener(v ->
-                startActivity(new Intent(this, FavoritesActivity.class)));
-        findViewById(R.id.navCart).setOnClickListener(v ->
-                startActivity(new Intent(this, CartActivity.class)));
-        findViewById(R.id.navProfile).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfileActivity.class)));
     }
 
     private void showNotification(String phoneName) {
@@ -228,5 +215,9 @@ public class PhoneDetailActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.detailBattery)).setText(phone.getBattery());
         ((TextView) findViewById(R.id.detailDisplay)).setText(phone.getDisplay());
         ((TextView) findViewById(R.id.detailOS)).setText(phone.getOs());
+        ((TextView) findViewById(R.id.detailChipset)).setText(phone.getChipset());
+        ((TextView) findViewById(R.id.detailCamera)).setText(phone.getCamera());
+        ((TextView) findViewById(R.id.detailCharging)).setText(phone.getCharging());
+        ((TextView) findViewById(R.id.detailFeatures)).setText(phone.getFeatures());
     }
 }

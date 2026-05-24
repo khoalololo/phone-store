@@ -29,12 +29,14 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         Order order = getItem(position);
         if (order != null) {
             TextView orderId = convertView.findViewById(R.id.orderId);
+            TextView orderStatus = convertView.findViewById(R.id.orderStatus);
             TextView orderDate = convertView.findViewById(R.id.orderDate);
             TextView orderItems = convertView.findViewById(R.id.orderItems);
             TextView orderItemCount = convertView.findViewById(R.id.orderItemCount);
             TextView orderTotal = convertView.findViewById(R.id.orderTotal);
 
             orderId.setText(String.format("Order #%d", 1000 + order.id));
+            orderStatus.setText("Ordered");
             orderDate.setText(order.date);
             orderItems.setText(order.itemsSummary);
             orderItemCount.setText(String.format(Locale.getDefault(), "%d Items", order.itemCount));

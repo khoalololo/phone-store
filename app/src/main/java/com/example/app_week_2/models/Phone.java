@@ -11,10 +11,10 @@ import java.io.Serializable;
 public class Phone implements Serializable {
     @PrimaryKey
     @NonNull
-    public String id = ""; // Default empty string to avoid null issues
+    public String id = ""; 
     private String brand;
     private String name;
-    public String imageName; // Changed from int to String
+    public String imageName; 
     private double price;
     private String storage;
     private String battery;
@@ -22,12 +22,17 @@ public class Phone implements Serializable {
     private String os;
     private String description;
     private float rating;
+    private String chipset;
+    private String camera;
+    private String charging;
+    private String features;
 
-    // Room needs a constructor it can use.
     public Phone() {}
 
     @Ignore
-    public Phone(String brand, String name, String imageName, double price, String storage, String battery, String display, String os, String description, float rating) {
+    public Phone(String brand, String name, String imageName, double price, String storage, 
+                 String battery, String display, String os, String description, float rating,
+                 String chipset, String camera, String charging, String features) {
         this.brand = brand;
         this.name = name;
         this.imageName = imageName;
@@ -38,9 +43,15 @@ public class Phone implements Serializable {
         this.os = os;
         this.description = description;
         this.rating = rating;
+        this.chipset = chipset;
+        this.camera = camera;
+        this.charging = charging;
+        this.features = features;
     }
 
-    public Phone(String id, String brand, String name, String imageName, double price, String storage, String battery, String display, String os, String description, float rating) {
+    public Phone(String id, String brand, String name, String imageName, double price, String storage, 
+                 String battery, String display, String os, String description, float rating,
+                 String chipset, String camera, String charging, String features) {
         this.id = id;
         this.brand = brand;
         this.name = name;
@@ -52,9 +63,13 @@ public class Phone implements Serializable {
         this.os = os;
         this.description = description;
         this.rating = rating;
+        this.chipset = chipset;
+        this.camera = camera;
+        this.charging = charging;
+        this.features = features;
     }
 
-    // Getters and Setters...
+    // Getters and Setters
     public String getBrand() { return brand; }
     public void setBrand(String brand) { this.brand = brand; }
     public String getName() { return name; }
@@ -75,4 +90,12 @@ public class Phone implements Serializable {
     public void setDescription(String description) { this.description = description; }
     public float getRating() { return rating; }
     public void setRating(float rating) { this.rating = rating; }
+    public String getChipset() { return chipset; }
+    public void setChipset(String chipset) { this.chipset = chipset; }
+    public String getCamera() { return camera; }
+    public void setCamera(String camera) { this.camera = camera; }
+    public String getCharging() { return charging; }
+    public void setCharging(String charging) { this.charging = charging; }
+    public String getFeatures() { return features; }
+    public void setFeatures(String features) { this.features = features; }
 }

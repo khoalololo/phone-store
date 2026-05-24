@@ -9,9 +9,9 @@ public class Order {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public String date;           // e.g. "18 May 2026"
+    public String date;
     public double total;
-    public String itemsSummary;   // e.g. "iPhone 15 Pro x1, Galaxy S24 x2"
+    public String itemsSummary;
     public int itemCount;
 
     public Order() {}

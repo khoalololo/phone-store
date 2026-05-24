@@ -2,8 +2,11 @@ package com.example.app_week_2.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,11 +40,22 @@ public class PaymentActivity extends AppCompatActivity {
 
         TextView summaryText  = findViewById(R.id.orderSummaryText);
         TextView totalText    = findViewById(R.id.paymentTotal);
+        EditText addressInput = findViewById(R.id.shippingAddress);
+        RadioGroup paymentGroup = findViewById(R.id.paymentMethodGroup);
+        LinearLayout cardContainer = findViewById(R.id.cardDetailsContainer);
         EditText cardNumber   = findViewById(R.id.cardNumber);
         EditText cardExpiry   = findViewById(R.id.cardExpiry);
         EditText cardCvv      = findViewById(R.id.cardCvv);
         EditText cardName     = findViewById(R.id.cardName);
         Button placeOrderBtn  = findViewById(R.id.placeOrderBtn);
+
+        paymentGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radioCard) {
+                cardContainer.setVisibility(View.VISIBLE);
+            } else {
+                cardContainer.setVisibility(View.GONE);
+            }
+        });
 
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
@@ -65,22 +79,30 @@ public class PaymentActivity extends AppCompatActivity {
         }).start();
 
         placeOrderBtn.setOnClickListener(v -> {
-            // Basic validation
-            if (cardNumber.getText().toString().trim().length() < 16) {
-                Toast.makeText(this, "Enter a valid card number", Toast.LENGTH_SHORT).show();
+            // Address validation
+            if (addressInput.getText().toString().trim().isEmpty()) {
+                Toast.makeText(this, "Please enter your delivery address", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (cardExpiry.getText().toString().trim().isEmpty()) {
-                Toast.makeText(this, "Enter expiry date", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (cardCvv.getText().toString().trim().length() < 3) {
-                Toast.makeText(this, "Enter a valid CVV", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (cardName.getText().toString().trim().isEmpty()) {
-                Toast.makeText(this, "Enter cardholder name", Toast.LENGTH_SHORT).show();
-                return;
+
+            // Payment method validation
+            if (paymentGroup.getCheckedRadioButtonId() == R.id.radioCard) {
+                if (cardNumber.getText().toString().trim().length() < 16) {
+                    Toast.makeText(this, "Enter a valid card number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (cardExpiry.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(this, "Enter expiry date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (cardCvv.getText().toString().trim().length() < 3) {
+                    Toast.makeText(this, "Enter a valid CVV", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (cardName.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(this, "Enter cardholder name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
 
             // Build order summary string

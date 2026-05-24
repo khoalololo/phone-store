@@ -6,152 +6,168 @@
     android:orientation="vertical"
     android:background="#F4F6F8">
 
-    <!-- HEADER -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/gradient_bg"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="48dp"
-        android:paddingBottom="36dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Review your items"
-            android:textSize="13sp"
-            android:textColor="#CCFFFFFF" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="My Cart"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@color/white" />
-
-    </LinearLayout>
-
-    <!-- CONTENT CARD -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_marginTop="-20dp"
-        android:background="@drawable/card_top_rounded">
+        android:fillViewport="true">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <ListView
-                android:id="@+id/cartList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:clipToPadding="false" />
-
-            <!-- Empty state -->
-            <LinearLayout
-                android:id="@+id/cartEmptyState"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:src="@drawable/ic_nav_cart"
-                    app:tint="@color/pink_primary"
-                    android:alpha="0.2"
-                    android:contentDescription="Empty Cart" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Your cart is empty"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="#1A1A2E" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Add phones from the store"
-                    android:textSize="13sp"
-                    android:textColor="#888888" />
-
-            </LinearLayout>
-
-        </FrameLayout>
-
-        <!-- TOTAL + CHECKOUT — always visible at bottom -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#FFFFFF"
-            android:paddingHorizontal="24dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="20dp"
-            android:elevation="4dp">
+            android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#EEEEEE"
-                android:layout_marginBottom="14dp" />
-
+            <!-- HEADER -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:background="@drawable/gradient_bg"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="48dp"
+                android:paddingBottom="36dp">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Total"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="#1A1A2E" />
-
-                <TextView
-                    android:id="@+id/cartTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$0.00"
-                    android:textSize="18sp"
+                    android:text="Review your items"
+                    android:textSize="13sp"
+                    android:textColor="#CCFFFFFF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="My Cart"
+                    android:textSize="26sp"
                     android:textStyle="bold"
-                    android:textColor="@color/pink_primary" />
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/checkoutBtn"
+            <!-- CONTENT CARD -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="14dp"
-                android:text="Proceed to Checkout"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/pink_primary" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="-24dp"
+                android:background="@drawable/card_top_rounded">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- Note: ListView inside ScrollView is generally discouraged.
+                         Using a vertical LinearLayout for items is better for small lists like a cart.
+                         For now, making the ListView auto-expand. -->
+                    <com.example.app_week_2.ui.home.NonScrollListView
+                        android:id="@+id/cartList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:clipToPadding="false" />
+
+                    <!-- Empty state -->
+                    <LinearLayout
+                        android:id="@+id/cartEmptyState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="300dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/ic_nav_cart"
+                            app:tint="@color/pink_primary"
+                            android:alpha="0.2"
+                            android:contentDescription="Empty Cart" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="Your cart is empty"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#1A1A2E" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Add phones from the store"
+                            android:textSize="13sp"
+                            android:textColor="#888888" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <!-- TOTAL + CHECKOUT -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#FFFFFF"
+                    android:paddingHorizontal="24dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="20dp"
+                    android:elevation="4dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#EEEEEE"
+                        android:layout_marginBottom="14dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Total"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#1A1A2E" />
+
+                        <TextView
+                            android:id="@+id/cartTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$0.00"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/pink_primary" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/checkoutBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="14dp"
+                        android:text="Proceed to Checkout"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/pink_primary" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
     <include layout="@layout/bottom_nav" />
 

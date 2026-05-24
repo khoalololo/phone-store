@@ -113,6 +113,38 @@
                 android:layout_marginVertical="20dp"
                 android:background="#EEEEEE" />
 
+            <!-- Shipping Address Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shipping Address"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A2E"
+                android:layout_marginBottom="14dp" />
+
+            <EditText
+                android:id="@+id/shippingAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="52dp"
+                android:hint="Full Delivery Address"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="12dp"
+                android:gravity="top"
+                android:inputType="textPostalAddress"
+                android:lines="2" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="20dp"
+                android:background="#EEEEEE" />
+
             <!-- Payment method section -->
             <TextView
                 android:layout_width="wrap_content"
@@ -123,71 +155,107 @@
                 android:textColor="#1A1A2E"
                 android:layout_marginBottom="14dp" />
 
-            <!-- Card number -->
-            <EditText
-                android:id="@+id/cardNumber"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:hint="Card Number"
-                android:textColorHint="#AAAAAA"
-                android:textColor="#1A1A1A"
-                android:textSize="14sp"
-                android:background="@drawable/field_bg"
-                android:paddingHorizontal="18dp"
-                android:inputType="number"
-                android:maxLength="16" />
-
-            <!-- Expiry + CVV row -->
-            <LinearLayout
+            <RadioGroup
+                android:id="@+id/paymentMethodGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginBottom="16dp">
 
-                <EditText
-                    android:id="@+id/cardExpiry"
+                <RadioButton
+                    android:id="@+id/radioCard"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:hint="MM/YY"
+                    android:text="Credit Card"
+                    android:textSize="14sp"
+                    android:checked="true"
+                    android:buttonTint="@color/pink_primary" />
+
+                <RadioButton
+                    android:id="@+id/radioCash"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cash on Delivery"
+                    android:textSize="14sp"
+                    android:buttonTint="@color/pink_primary" />
+            </RadioGroup>
+
+            <!-- Card details container -->
+            <LinearLayout
+                android:id="@+id/cardDetailsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Card number -->
+                <EditText
+                    android:id="@+id/cardNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="Card Number"
                     android:textColorHint="#AAAAAA"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:background="@drawable/field_bg"
                     android:paddingHorizontal="18dp"
                     android:inputType="number"
-                    android:maxLength="4" />
+                    android:maxLength="16" />
 
+                <!-- Expiry + CVV row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <EditText
+                        android:id="@+id/cardExpiry"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:hint="MM/YY"
+                        android:textColorHint="#AAAAAA"
+                        android:textColor="#1A1A1A"
+                        android:textSize="14sp"
+                        android:background="@drawable/field_bg"
+                        android:paddingHorizontal="18dp"
+                        android:inputType="number"
+                        android:maxLength="4" />
+
+                    <EditText
+                        android:id="@+id/cardCvv"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1"
+                        android:hint="CVV"
+                        android:textColorHint="#AAAAAA"
+                        android:textColor="#1A1A1A"
+                        android:textSize="14sp"
+                        android:background="@drawable/field_bg"
+                        android:paddingHorizontal="18dp"
+                        android:inputType="numberPassword"
+                        android:maxLength="3" />
+
+                </LinearLayout>
+
+                <!-- Cardholder name -->
                 <EditText
-                    android:id="@+id/cardCvv"
-                    android:layout_width="0dp"
+                    android:id="@+id/cardName"
+                    android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:layout_weight="1"
-                    android:hint="CVV"
+                    android:layout_marginTop="12dp"
+                    android:hint="Cardholder Name"
                     android:textColorHint="#AAAAAA"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:background="@drawable/field_bg"
                     android:paddingHorizontal="18dp"
-                    android:inputType="numberPassword"
-                    android:maxLength="3" />
+                    android:inputType="textPersonName" />
 
             </LinearLayout>
-
-            <!-- Cardholder name -->
-            <EditText
-                android:id="@+id/cardName"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="12dp"
-                android:hint="Cardholder Name"
-                android:textColorHint="#AAAAAA"
-                android:textColor="#1A1A1A"
-                android:textSize="14sp"
-                android:background="@drawable/field_bg"
-                android:paddingHorizontal="18dp"
-                android:inputType="textPersonName" />
 
             <View
                 android:layout_width="match_parent"

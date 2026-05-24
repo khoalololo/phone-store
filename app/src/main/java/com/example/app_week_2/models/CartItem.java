@@ -11,7 +11,7 @@ public class CartItem {
 
     public String brand;
     public String name;
-    public String imageName; // Changed from int imageResource to String imageName
+    public String imageName;
     public double price;
     public int quantity;
 

@@ -26,6 +26,7 @@ import com.example.app_week_2.ui.auth.ProfileActivity;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
@@ -34,6 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     private PhoneAdapter adapter;
     private String selectedBrand = "All";
     private String searchQuery = "";
+    private String currentSort = "None";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +136,28 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.tagSamsung).setOnClickListener(v -> updateTagSelection("Samsung", (TextView) v));
         findViewById(R.id.tagGoogle).setOnClickListener(v -> updateTagSelection("Google", (TextView) v));
         findViewById(R.id.tagOnePlus).setOnClickListener(v -> updateTagSelection("OnePlus", (TextView) v));
+
+        findViewById(R.id.sortLow).setOnClickListener(v -> updateSortSelection("Low", (TextView) v));
+        findViewById(R.id.sortHigh).setOnClickListener(v -> updateSortSelection("High", (TextView) v));
+    }
+
+    private void updateSortSelection(String sort, TextView selectedTag) {
+        if (currentSort.equals(sort)) {
+            currentSort = "None";
+            selectedTag.setBackgroundResource(R.drawable.tag_inactive_bg);
+            selectedTag.setTextColor(ContextCompat.getColor(this, R.color.pink_primary));
+        } else {
+            currentSort = sort;
+            // Reset other sort tags
+            findViewById(R.id.sortLow).setBackgroundResource(R.drawable.tag_inactive_bg);
+            findViewById(R.id.sortHigh).setBackgroundResource(R.drawable.tag_inactive_bg);
+            ((TextView)findViewById(R.id.sortLow)).setTextColor(ContextCompat.getColor(this, R.color.pink_bright));
+            ((TextView)findViewById(R.id.sortHigh)).setTextColor(ContextCompat.getColor(this, R.color.pink_bright));
+
+            selectedTag.setBackgroundResource(R.drawable.tag_active_bg);
+            selectedTag.setTextColor(ContextCompat.getColor(this, R.color.white));
+        }
+        filter();
     }
 
     private void updateTagSelection(String brand, TextView selectedTag) {
@@ -164,6 +188,14 @@ public class HomeActivity extends AppCompatActivity {
                     phone.getBrand().toLowerCase().contains(searchQuery);
             if (matchesBrand && matchesSearch) filtered.add(phone);
         }
+
+        // Apply sorting
+        if (currentSort.equals("Low")) {
+            Collections.sort(filtered, (p1, p2) -> Double.compare(p1.getPrice(), p2.getPrice()));
+        } else if (currentSort.equals("High")) {
+            Collections.sort(filtered, (p1, p2) -> Double.compare(p2.getPrice(), p1.getPrice()));
+        }
+
         adapter.addAll(filtered);
         adapter.notifyDataSetChanged();
     }
