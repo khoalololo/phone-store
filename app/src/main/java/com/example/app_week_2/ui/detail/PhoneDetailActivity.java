@@ -81,7 +81,7 @@ public class PhoneDetailActivity extends AppCompatActivity {
                 if (isFav) {
                     favoriteRepository.removeFavorite(currentPhone.getName());
                     runOnUiThread(() -> {
-                        favoriteBtn.setText("Add to Favorites");
+                        favoriteBtn.setText("Favorite");
                         Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show();
                     });
                 } else {
@@ -107,6 +107,9 @@ public class PhoneDetailActivity extends AppCompatActivity {
 
         submitReviewBtn.setOnClickListener(v -> submitReview());
 
+        findViewById(R.id.cartButton).setOnClickListener(v -> {
+            startActivity(new Intent(this, CartActivity.class));
+        });
 
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
     }

@@ -41,6 +41,18 @@
                     android:padding="6dp"
                     app:tint="@color/pink_primary" />
 
+                <ImageButton
+                    android:id="@+id/cartButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="16dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/circle_white_bg"
+                    android:src="@drawable/ic_nav_cart"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    app:tint="@color/pink_primary" />
+
             </FrameLayout>
 
             <!-- CONTENT CARD -->
@@ -120,30 +132,26 @@
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="20dp" android:background="#EEEEEE" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/detailPhonePrice"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="About"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="#1A1A2E" />
-                    <TextView
-                        android:id="@+id/detailPhonePrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="6dp"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:background="@drawable/price_badge_bg" />
-                </LinearLayout>
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/price_badge_bg" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="About"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1A2E" />
 
                 <TextView
                     android:id="@+id/detailPhoneDescription"
@@ -301,16 +309,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="16dp"
+            android:elevation="12dp">
 
             <Button
                 android:id="@+id/favoriteBtn"
                 android:layout_width="0dp"
                 android:layout_height="52dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:text="Add to Favorites"
+                android:text="Favorite"
                 android:textSize="14sp"
                 android:textAllCaps="false"
                 android:textColor="@color/pink_primary"
@@ -332,6 +345,7 @@
                 app:cornerRadius="12dp" />
 
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

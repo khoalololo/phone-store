@@ -151,8 +151,8 @@ public class HomeActivity extends AppCompatActivity {
             // Reset other sort tags
             findViewById(R.id.sortLow).setBackgroundResource(R.drawable.tag_inactive_bg);
             findViewById(R.id.sortHigh).setBackgroundResource(R.drawable.tag_inactive_bg);
-            ((TextView)findViewById(R.id.sortLow)).setTextColor(ContextCompat.getColor(this, R.color.pink_bright));
-            ((TextView)findViewById(R.id.sortHigh)).setTextColor(ContextCompat.getColor(this, R.color.pink_bright));
+            ((TextView)findViewById(R.id.sortLow)).setTextColor(ContextCompat.getColor(this, R.color.pink_primary));
+            ((TextView)findViewById(R.id.sortHigh)).setTextColor(ContextCompat.getColor(this, R.color.pink_primary));
 
             selectedTag.setBackgroundResource(R.drawable.tag_active_bg);
             selectedTag.setTextColor(ContextCompat.getColor(this, R.color.white));
