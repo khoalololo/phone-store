@@ -16,6 +16,8 @@ import com.example.app_week_2.ui.auth.ProfileActivity;
 import java.util.List;
 
 import com.example.app_week_2.data.repository.CartRepository;
+import com.example.app_week_2.data.SessionManager;
+import android.widget.Toast;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -26,12 +28,14 @@ public class CartActivity extends AppCompatActivity {
     private List<CartItem> items;
     private CartAdapter adapter;
     private CartRepository repository;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        sessionManager = new SessionManager(this);
         repository = new CartRepository(this);
         dao        = AppDatabase.getInstance(this).cartDao();
         listView   = findViewById(R.id.cartList);
@@ -39,6 +43,11 @@ public class CartActivity extends AppCompatActivity {
         cartTotal  = findViewById(R.id.cartTotal);
 
         findViewById(R.id.checkoutBtn).setOnClickListener(v -> {
+            if (!sessionManager.isLoggedIn()) {
+                Toast.makeText(this, "Please login to checkout", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, com.example.app_week_2.ui.auth.LoginActivity.class));
+                return;
+            }
             if (items == null || items.isEmpty()) return;
             Intent intent = new Intent(this, PaymentActivity.class);
             startActivity(intent);

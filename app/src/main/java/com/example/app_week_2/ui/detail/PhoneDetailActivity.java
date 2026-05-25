@@ -79,6 +79,10 @@ public class PhoneDetailActivity extends AppCompatActivity {
         }).start();
 
         favoriteBtn.setOnClickListener(v -> {
+            if (!sessionManager.isLoggedIn()) {
+                redirectToLogin();
+                return;
+            }
             if (currentPhone == null) return;
             new Thread(() -> {
                 boolean isFav = favoriteRepository.getAllLocal().stream()
@@ -100,6 +104,10 @@ public class PhoneDetailActivity extends AppCompatActivity {
         });
 
         addToCartBtn.setOnClickListener(v -> {
+            if (!sessionManager.isLoggedIn()) {
+                redirectToLogin();
+                return;
+            }
             if (currentPhone == null) return;
             cartRepository.addToCart(CartItem.fromPhone(currentPhone));
             showNotification(currentPhone.getName());
@@ -111,7 +119,13 @@ public class PhoneDetailActivity extends AppCompatActivity {
             snackbar.show();
         });
 
-        submitReviewBtn.setOnClickListener(v -> submitReview());
+        submitReviewBtn.setOnClickListener(v -> {
+            if (!sessionManager.isLoggedIn()) {
+                redirectToLogin();
+                return;
+            }
+            submitReview();
+        });
 
         findViewById(R.id.cartButton).setOnClickListener(v -> {
             startActivity(new Intent(this, CartActivity.class));
@@ -172,6 +186,12 @@ public class PhoneDetailActivity extends AppCompatActivity {
             ((RatingBar) view.findViewById(R.id.reviewItemRating)).setRating(review.rating);
             container.addView(view);
         }
+    }
+
+    private void redirectToLogin() {
+        Toast.makeText(this, "Please login to use this feature", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, com.example.app_week_2.ui.auth.LoginActivity.class);
+        startActivity(intent);
     }
 
     private void submitReview() {
