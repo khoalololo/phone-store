@@ -57,7 +57,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 } else {
                     empty.setVisibility(View.GONE);
                     listView.setVisibility(View.VISIBLE);
-                    listView.setAdapter(new OrderAdapter(this, orders));
+                    listView.setAdapter(new OrderAdapter(this, orders, this::loadOrders));
                 }
             });
         }).start();

@@ -27,7 +27,7 @@ public class UserRepository {
                     User user = new User(username, email, password);
                     new Thread(() -> {
                         dao.insert(user);
-                        session.saveSession(username, email);
+                        session.saveSession(username, email, false);
                         FirestoreManager.syncUser(user);
                         callback.onSuccess();
                     }).start();
@@ -66,16 +66,19 @@ public class UserRepository {
         auth.signInWithEmailAndPassword(user.getEmail(), password)
                 .addOnSuccessListener(result -> {
                     new Thread(() -> {
-                        // Ensure user is in local DB for next time
                         if (dao.findByEmail(user.getEmail()) == null) {
                             dao.insert(user);
                         }
-                        session.saveSession(user.getUsername(), user.getEmail());
-                        callback.onSuccess();
+                        // Check Firestore for isAdmin flag
+                        FirestoreManager.getIsAdmin(result.getUser().getUid(), isAdmin -> {
+                            session.saveSession(user.getUsername(), user.getEmail(), isAdmin);
+                            callback.onSuccess();
+                        });
                     }).start();
                 })
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
+
 
     public interface AuthCallback {
         void onSuccess();

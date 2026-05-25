@@ -30,6 +30,14 @@ public class OrderRepository {
         return dao.getAll();
     }
 
+    public void cancelOrder(int orderId, Runnable onComplete) {
+        new Thread(() -> {
+            dao.deleteById(orderId);
+            FirestoreManager.removeOrder(orderId);
+            if (onComplete != null) onComplete.run();
+        }).start();
+    }
+
     public void syncFromCloud(Runnable onComplete) {
         FirestoreManager.downloadOrders(cloudList -> {
             new Thread(() -> {

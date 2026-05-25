@@ -31,7 +31,8 @@ import android.widget.LinearLayout;
 import java.util.List;
 import android.view.LayoutInflater;
 import android.view.View;
-
+import com.example.app_week_2.data.repository.PhoneRepository;
+import java.util.ArrayList;
 
 public class PhoneDetailActivity extends AppCompatActivity {
 
@@ -40,6 +41,7 @@ public class PhoneDetailActivity extends AppCompatActivity {
     private ReviewDao reviewDao;
     private SessionManager sessionManager;
     private Phone currentPhone;
+    private PhoneRepository phoneRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class PhoneDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_phone_detail);
 
         favoriteRepository = new FavoriteRepository(this);
+        phoneRepository = new PhoneRepository(this);
         cartRepository = new CartRepository(this);
         reviewDao = AppDatabase.getInstance(this).reviewDao();
         sessionManager = new SessionManager(this);
@@ -59,6 +62,7 @@ public class PhoneDetailActivity extends AppCompatActivity {
             return;
         }
 
+        loadRelatedPhones();
         populateUI(currentPhone);
         loadReviews();
 
@@ -68,16 +72,17 @@ public class PhoneDetailActivity extends AppCompatActivity {
         // Check if already favorited
         new Thread(() -> {
             boolean isFav = favoriteRepository.getAllLocal().stream()
-                    .anyMatch(p -> p.getName().equals(currentPhone.getName()));
+                    .anyMatch(p -> p != null && p.getName() != null && currentPhone != null && p.getName().equals(currentPhone.getName()));
             runOnUiThread(() -> {
                 if (isFav) favoriteBtn.setText("Saved");
             });
         }).start();
 
         favoriteBtn.setOnClickListener(v -> {
+            if (currentPhone == null) return;
             new Thread(() -> {
                 boolean isFav = favoriteRepository.getAllLocal().stream()
-                        .anyMatch(p -> p.getName().equals(currentPhone.getName()));
+                        .anyMatch(p -> p != null && p.getName() != null && p.getName().equals(currentPhone.getName()));
                 if (isFav) {
                     favoriteRepository.removeFavorite(currentPhone.getName());
                     runOnUiThread(() -> {
@@ -95,6 +100,7 @@ public class PhoneDetailActivity extends AppCompatActivity {
         });
 
         addToCartBtn.setOnClickListener(v -> {
+            if (currentPhone == null) return;
             cartRepository.addToCart(CartItem.fromPhone(currentPhone));
             showNotification(currentPhone.getName());
             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
@@ -141,13 +147,10 @@ public class PhoneDetailActivity extends AppCompatActivity {
     }
 
     private void loadReviews() {
+        if (currentPhone == null) return;
         new Thread(() -> {
             List<Review> reviews = reviewDao.getReviewsForPhone(currentPhone.id);
-            float avg = 0;
-            if (!reviews.isEmpty()) {
-                avg = reviewDao.getAverageRating(currentPhone.id);
-            }
-            final float finalAvg = avg;
+            final float finalAvg = reviews.isEmpty() ? 0 : reviewDao.getAverageRating(currentPhone.id);
             runOnUiThread(() -> {
                 displayReviews(reviews);
                 if (finalAvg > 0) {
@@ -179,7 +182,6 @@ public class PhoneDetailActivity extends AppCompatActivity {
 
         RatingBar ratingBar = findViewById(R.id.reviewRatingBar);
         EditText editText = findViewById(R.id.reviewEditText);
-
         float rating = ratingBar.getRating();
         String comment = editText.getText().toString().trim();
 
@@ -223,4 +225,50 @@ public class PhoneDetailActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.detailCharging)).setText(phone.getCharging());
         ((TextView) findViewById(R.id.detailFeatures)).setText(phone.getFeatures());
     }
+
+    private void loadRelatedPhones() {
+        new Thread(() -> {
+            List<Phone> allPhones = phoneRepository.getAllLocal();
+            List<Phone> related = new ArrayList<>();
+            for (Phone p : allPhones) {
+                // Same brand, different phone
+                if (p != null && p.getBrand() != null && currentPhone != null && currentPhone.getBrand() != null
+                        && p.getBrand().equalsIgnoreCase(currentPhone.getBrand())
+                        && p.getName() != null && currentPhone.getName() != null
+                        && !p.getName().equals(currentPhone.getName())) {
+                    related.add(p);
+                }
+            }
+            runOnUiThread(() -> displayRelatedPhones(related));
+        }).start();
+    }
+
+    private void displayRelatedPhones(List<Phone> phones) {
+        LinearLayout container = findViewById(R.id.relatedPhonesContainer);
+        container.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        for (Phone phone : phones) {
+            View card = inflater.inflate(R.layout.item_related_phone, container, false);
+
+            ImageView img = card.findViewById(R.id.relatedPhoneImage);
+            TextView name = card.findViewById(R.id.relatedPhoneName);
+            TextView price = card.findViewById(R.id.relatedPhonePrice);
+
+            int resId = getResources().getIdentifier(
+                    phone.getImageName(), "drawable", getPackageName());
+            if (resId != 0) img.setImageResource(resId);
+            name.setText(phone.getName());
+            price.setText(String.format(Locale.getDefault(), "$%.2f", phone.getPrice()));
+
+            // Tap related phone → open its detail page
+            card.setOnClickListener(v -> {
+                Intent intent = new Intent(this, PhoneDetailActivity.class);
+                intent.putExtra("phone", phone);
+                startActivity(intent);
+            });
+            container.addView(card);
+        }
+    }
+
 }

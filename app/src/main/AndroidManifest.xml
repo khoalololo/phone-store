@@ -34,7 +34,8 @@
         <activity android:name=".ui.home.CartActivity" />
         <activity android:name=".ui.home.PaymentActivity" />
         <activity android:name=".ui.home.OrderHistoryActivity" />
-
+        <activity android:name=".ui.admin.AdminDashboardActivity" />
+        <activity android:name=".ui.admin.AdminPhoneFormActivity" />
     </application>
 
 </manifest>

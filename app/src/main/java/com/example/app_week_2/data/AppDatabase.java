@@ -15,7 +15,7 @@ import com.example.app_week_2.models.User;
 
 import com.example.app_week_2.models.Review;
 
-@Database(entities = {User.class, FavoritePhone.class, CartItem.class, Order.class, Phone.class, Review.class}, version = 6)
+@Database(entities = {User.class, FavoritePhone.class, CartItem.class, Order.class, Phone.class, Review.class}, version = 7)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract FavoriteDao favoriteDao();

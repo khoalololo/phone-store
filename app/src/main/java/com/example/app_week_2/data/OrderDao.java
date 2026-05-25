@@ -16,4 +16,7 @@ public interface OrderDao {
     // Most recent first
     @Query("SELECT * FROM orders ORDER BY id DESC")
     List<Order> getAll();
+
+    @Query("DELETE FROM orders WHERE id = :orderId")
+    void deleteById(int orderId);
 }

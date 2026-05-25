@@ -12,6 +12,8 @@ import com.example.app_week_2.ui.home.CartActivity;
 import com.example.app_week_2.ui.home.HomeActivity;
 import com.example.app_week_2.ui.home.OrderHistoryActivity;
 import com.example.app_week_2.ui.home.FavoritesActivity;
+import com.example.app_week_2.ui.admin.AdminDashboardActivity;
+import android.view.View;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -52,6 +54,14 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(this, FavoritesActivity.class)));
         findViewById(R.id.navCart).setOnClickListener(v ->
                 startActivity(new Intent(this, CartActivity.class)));
+
+        LinearLayout adminRow = findViewById(R.id.adminRow);
+        if (session.isAdmin()) {
+            adminRow.setVisibility(View.VISIBLE);
+            adminRow.setOnClickListener(v ->
+                    startActivity(new Intent(this, AdminDashboardActivity.class))
+            );
+        }
 
     }
 }

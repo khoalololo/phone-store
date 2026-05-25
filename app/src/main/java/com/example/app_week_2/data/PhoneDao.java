@@ -21,4 +21,7 @@ public interface PhoneDao {
 
     @Query("SELECT COUNT(*) FROM phones")
     int count();
+    @Query("DELETE FROM phones WHERE id = :id")
+    void deleteById(String id);
+
 }

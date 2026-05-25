@@ -14,6 +14,7 @@ import com.example.app_week_2.R;
 import com.example.app_week_2.data.AppDatabase;
 import com.example.app_week_2.data.CartDao;
 import com.example.app_week_2.data.OrderDao;
+import com.example.app_week_2.data.remote.FirestoreManager;
 import com.example.app_week_2.models.CartItem;
 import com.example.app_week_2.models.Order;
 
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import android.view.View;
 
 import com.example.app_week_2.data.repository.OrderRepository;
 
@@ -29,6 +31,9 @@ public class PaymentActivity extends AppCompatActivity {
     private CartDao cartDao;
     private List<CartItem> cartItems;
     private OrderRepository orderRepository;
+
+    private double discountAmount = 0;
+    private double originalTotal  = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,40 @@ public class PaymentActivity extends AppCompatActivity {
         EditText cardCvv      = findViewById(R.id.cardCvv);
         EditText cardName     = findViewById(R.id.cardName);
         Button placeOrderBtn  = findViewById(R.id.placeOrderBtn);
+        EditText couponInput   = findViewById(R.id.couponInput);
+        Button applyCouponBtn  = findViewById(R.id.applyCouponBtn);
+        TextView couponStatus  = findViewById(R.id.couponStatus);
+
+        applyCouponBtn.setOnClickListener(v -> {
+            String code = couponInput.getText().toString().trim();
+            if (code.isEmpty()) {
+                Toast.makeText(this, "Please enter a coupon code", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            FirestoreManager.validateCoupon(code, (valid, discount, type) -> {
+                runOnUiThread(() -> {
+                    couponStatus.setVisibility(View.VISIBLE);
+                    if (valid) {
+                        if (type.equals("percent")) {
+                            discountAmount = originalTotal * (discount / 100.0);
+                        } else {
+                            discountAmount = Math.min(discount, originalTotal);
+                        }
+                        double newTotal = originalTotal - discountAmount;
+
+                        couponStatus.setTextColor(0xFF00897B); // green
+                        couponStatus.setText("Coupon applied! You save $" + String.format("%.2f", discountAmount));
+                        totalText.setText(String.format("$%.2f", newTotal));
+                        applyCouponBtn.setEnabled(false); // prevent double-applying
+                    } else {
+                        couponStatus.setTextColor(0xFFC62828); // red
+                        couponStatus.setText("Invalid or expired coupon code");
+                        discountAmount = 0;
+                    }
+                });
+            });
+        });
 
         paymentGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.radioCard) {
@@ -75,6 +114,7 @@ public class PaymentActivity extends AppCompatActivity {
                 }
                 summaryText.setText(summary.toString().trim());
                 totalText.setText(String.format("$%.2f", total));
+                originalTotal = total;
             });
         }).start();
 
@@ -116,7 +156,8 @@ public class PaymentActivity extends AppCompatActivity {
             }
 
             String date = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
-            Order order = new Order(date, total, summary.toString().replaceAll(", $", ""), count);
+            double finalTotal = total - discountAmount;
+            Order order = new Order(date, finalTotal, summary.toString().replaceAll(", $", ""), count);
 
             orderRepository.placeOrder(order, () -> {
                 new Thread(() -> {

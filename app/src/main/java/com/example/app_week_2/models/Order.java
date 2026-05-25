@@ -13,6 +13,7 @@ public class Order {
     public double total;
     public String itemsSummary;
     public int itemCount;
+    public String status = "Ordered";
 
     public Order() {}
 
@@ -21,5 +22,6 @@ public class Order {
         this.total = total;
         this.itemsSummary = itemsSummary;
         this.itemCount = itemCount;
+        this.status = "Ordered";
     }
 }

@@ -27,7 +27,7 @@ public class FirestoreManager {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    // --- USER PROFILE ---
+    // user profile
 
     public static void syncUser(User user) {
         String uid = uid();
@@ -72,7 +72,7 @@ public class FirestoreManager {
                 .addOnFailureListener(e -> callback.onUserLoaded(null));
     }
 
-    // --- FAVORITES ---
+    // favorites
 
     public static void syncFavorite(FavoritePhone phone) {
         String uid = uid();
@@ -116,7 +116,7 @@ public class FirestoreManager {
                 });
     }
 
-    // --- CART ---
+    // cart
 
     public static void syncCart(List<CartItem> items) {
         String uid = uid();
@@ -139,7 +139,7 @@ public class FirestoreManager {
         public CartWrapper(List<CartItem> items) { this.items = items; }
     }
 
-    // --- ORDERS ---
+    // orders
 
     public static void syncOrder(Order order) {
         String uid = uid();
@@ -151,6 +151,18 @@ public class FirestoreManager {
                 .document(String.valueOf(order.id))
                 .set(order)
                 .addOnSuccessListener(v -> Log.d(TAG, "Order synced"));
+    }
+
+    public static void removeOrder(int orderId) {
+        String uid = uid();
+        if (uid == null) return;
+
+        db.collection("users")
+                .document(uid)
+                .collection("orders")
+                .document(String.valueOf(orderId))
+                .delete()
+                .addOnSuccessListener(v -> Log.d(TAG, "Order removed from Firestore"));
     }
 
     public static void downloadOrders(OrdersCallback callback) {
@@ -171,7 +183,7 @@ public class FirestoreManager {
                 });
     }
 
-    // --- PHONES ---
+    // phones
 
     public static void uploadPhone(Phone phone) {
         db.collection("phones")
@@ -198,6 +210,56 @@ public class FirestoreManager {
                 });
     }
 
+    public static void deletePhone(String phoneId) {
+        db.collection("phones")
+                .document(phoneId)
+                .delete()
+                .addOnSuccessListener(v -> Log.d(TAG, "Phone deleted: " + phoneId))
+                .addOnFailureListener(e -> Log.e(TAG, "Delete failed", e));
+    }
+
+    // Call this after login to check if user is admin.
+    // In Firestore Console, set  users/{uid}/isAdmin = true  for admin accounts.
+    public static void getIsAdmin(String uid, AdminCallback callback) {
+        db.collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    Boolean isAdmin = doc.getBoolean("isAdmin");
+                    callback.onResult(isAdmin != null && isAdmin);
+                })
+                .addOnFailureListener(e -> callback.onResult(false));
+    }
+
+    // Firestore structure:
+    //   coupons/{code}  →  { discount: 20, type: "percent", active: true }
+    // discount = 20 means 20% off. type "percent" or "fixed" ($20 off).
+    public static void validateCoupon(String code, CouponCallback callback) {
+        db.collection("coupons")
+                .document(code.toUpperCase())   // store codes in uppercase
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        Boolean active = doc.getBoolean("active");
+                        if (active != null && active) {
+                            double discount = doc.getDouble("discount") != null
+                                    ? doc.getDouble("discount") : 0;
+                            String type = doc.getString("type") != null
+                                    ? doc.getString("type") : "percent";
+                            callback.onResult(true, discount, type);
+                        } else {
+                            callback.onResult(false, 0, ""); // expired
+                        }
+                    } else {
+                        callback.onResult(false, 0, ""); // not found
+                    }
+                })
+                .addOnFailureListener(e -> callback.onResult(false, 0, ""));
+    }
+
+
+
+
     public interface PhonesCallback {
         void onPhonesLoaded(List<Phone> phones);
     }
@@ -212,4 +274,16 @@ public class FirestoreManager {
     public interface OrdersCallback {
         void onOrdersLoaded(List<Order> orders);
     }
+
+    public interface AdminCallback {
+        void onResult(boolean isAdmin);
+    }
+
+    public interface CouponCallback {
+        // valid=true means code exists and is active
+        // discount = the discount value
+        // type = "percent" or "fixed"
+        void onResult(boolean valid, double discount, String type);
+    }
+
 }

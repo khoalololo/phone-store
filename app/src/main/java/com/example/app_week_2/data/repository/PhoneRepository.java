@@ -41,4 +41,12 @@ public class PhoneRepository {
             }
         }).start();
     }
+
+    public void savePhone(Phone phone) {
+        new Thread(() -> {
+            dao.insertAll(java.util.Collections.singletonList(phone)); // REPLACE handles upsert
+            FirestoreManager.uploadPhone(phone);
+        }).start();
+    }
+
 }

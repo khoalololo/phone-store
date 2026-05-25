@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F6F8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- HERO -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@drawable/gradient_bg">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/circle_white_bg"
+                android:src="@android:drawable/ic_menu_revert"
+                android:scaleType="centerInside"
+                android:padding="6dp" />
+
+            <TextView
+                android:id="@+id/formTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Add Phone"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+
+        </FrameLayout>
+
+        <!-- FORM CARD -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="-20dp"
+            android:background="@drawable/card_top_rounded"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="40dp">
+
+            <!-- Basic info section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Basic Info"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A2E"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/fieldBrand"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="Brand (e.g. Apple, Samsung)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldName"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Model Name (e.g. iPhone 15 Pro)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldImageName"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Image name (e.g. iphone, samsung)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldPrice"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Price (e.g. 999.00)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/fieldRating"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Rating (1.0 – 5.0)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="numberDecimal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EEEEEE"
+                android:layout_marginVertical="20dp" />
+
+            <!-- Description -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A2E"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/fieldDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone description..."
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:padding="18dp"
+                android:gravity="top"
+                android:lines="3"
+                android:inputType="textMultiLine" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EEEEEE"
+                android:layout_marginVertical="20dp" />
+
+            <!-- Specs section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Specifications"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A2E"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/fieldStorage"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="Storage (e.g. 256GB / 512GB)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldBattery"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Battery (e.g. 5000 mAh)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Display (e.g. 6.1-inch OLED 120Hz)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldChipset"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Chipset (e.g. Snapdragon 8 Gen 3)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldCamera"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Camera (e.g. 50MP + 12MP + 10MP)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldCharging"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Charging (e.g. 45W Wired, 15W Wireless)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldOs"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="OS (e.g. Android 15, iOS 18)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/fieldFeatures"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:hint="Features (e.g. IP68, Face ID, 5G)"
+                android:textColorHint="#AAAAAA"
+                android:textColor="#1A1A1A"
+                android:textSize="14sp"
+                android:background="@drawable/field_bg"
+                android:paddingHorizontal="18dp"
+                android:inputType="text" />
+
+            <!-- Save button -->
+            <Button
+                android:id="@+id/savePhoneBtn"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="28dp"
+                android:text="Save Phone"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/pink_primary" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
