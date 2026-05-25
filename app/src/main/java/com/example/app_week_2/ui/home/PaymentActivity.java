@@ -44,7 +44,11 @@ public class PaymentActivity extends AppCompatActivity {
         cartDao  = AppDatabase.getInstance(this).cartDao();
 
         TextView summaryText  = findViewById(R.id.orderSummaryText);
-        TextView totalText    = findViewById(R.id.paymentTotal);
+        TextView totalText    = findViewById(R.id.mathTotal);
+        TextView mathSubtotal = findViewById(R.id.mathSubtotal);
+        TextView mathDiscount = findViewById(R.id.mathDiscount);
+        LinearLayout mathDiscountRow = findViewById(R.id.mathDiscountRow);
+
         EditText addressInput = findViewById(R.id.shippingAddress);
         RadioGroup paymentGroup = findViewById(R.id.paymentMethodGroup);
         LinearLayout cardContainer = findViewById(R.id.cardDetailsContainer);
@@ -77,7 +81,12 @@ public class PaymentActivity extends AppCompatActivity {
 
                         couponStatus.setTextColor(0xFF00897B); // green
                         couponStatus.setText("Coupon applied! You save $" + String.format("%.2f", discountAmount));
+                        
+                        // Update Math Display
+                        mathDiscountRow.setVisibility(View.VISIBLE);
+                        mathDiscount.setText(String.format("-$%.2f", discountAmount));
                         totalText.setText(String.format("$%.2f", newTotal));
+                        
                         applyCouponBtn.setEnabled(false); // prevent double-applying
                     } else {
                         couponStatus.setTextColor(0xFFC62828); // red
@@ -113,8 +122,9 @@ public class PaymentActivity extends AppCompatActivity {
                     total += item.getSubtotal();
                 }
                 summaryText.setText(summary.toString().trim());
-                totalText.setText(String.format("$%.2f", total));
                 originalTotal = total;
+                mathSubtotal.setText(String.format("$%.2f", total));
+                totalText.setText(String.format("$%.2f", total));
             });
         }).start();
 
